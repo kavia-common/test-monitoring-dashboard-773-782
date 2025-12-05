@@ -1,7 +1,6 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
-import Dashboard from '../Dashboard';
 
 // Mock path must match component import: '../services/testRunsService' -> '../../services/testRunsService'
 jest.mock('../../services/testRunsService', () => ({
@@ -11,6 +10,7 @@ jest.mock('../../services/testRunsService', () => ({
       { id: '1', suite: 'Smoke', status: 'passed', passed: 10, failed: 0, skipped: 1, durationSec: 100, startTime: '2024-01-01T00:00:00Z' },
       { id: '2', suite: 'Regression', status: 'failed', passed: 8, failed: 2, skipped: 0, durationSec: 120, startTime: '2024-01-02T00:00:00Z' },
     ]),
+    get: jest.fn(),
   },
 }));
 
@@ -20,9 +20,12 @@ describe('Dashboard', () => {
       ok: true,
       json: async () => ({}),
     });
+    jest.resetModules();
   });
 
   test('shows KPI cards, chart, and recent runs table', async () => {
+    // Require component after mocks to ensure no race on import order
+    const Dashboard = require('../Dashboard').default;
     renderWithProviders(<Dashboard />);
     // KPI titles
     expect(screen.getByText('Total Runs')).toBeInTheDocument();

@@ -1,7 +1,6 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
-import Suites from '../Suites';
 
 // Mock path matches component import: '../services/suitesService' -> '../../services/suitesService'
 jest.mock('../../services/suitesService', () => ({
@@ -20,9 +19,11 @@ describe('Suites', () => {
       ok: true,
       json: async () => ({}),
     });
+    jest.resetModules();
   });
 
   test('lists suites with last run status', async () => {
+    const Suites = require('../Suites').default;
     renderWithProviders(<Suites />);
     await waitFor(() => expect(screen.getByText('Suites')).toBeInTheDocument());
     expect(screen.getByText('Smoke')).toBeInTheDocument();

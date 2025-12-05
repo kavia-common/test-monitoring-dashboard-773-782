@@ -1,12 +1,12 @@
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
-import TestRunDetails from '../TestRunDetails';
 
 // Mock path matches component import
 jest.mock('../../services/testRunsService', () => ({
   __esModule: true,
   testRunsService: {
+    list: jest.fn(),
     get: jest.fn().mockResolvedValue({
       id: '1005',
       suite: 'Regression',
@@ -28,9 +28,11 @@ describe('TestRunDetails', () => {
       ok: true,
       json: async () => ({}),
     });
+    jest.resetModules();
   });
 
   test('renders tabs and switches between them', async () => {
+    const TestRunDetails = require('../TestRunDetails').default;
     renderWithProviders(<TestRunDetails runId="1005" />);
     await waitFor(() => expect(screen.getByText(/Run 1005/)).toBeInTheDocument());
 

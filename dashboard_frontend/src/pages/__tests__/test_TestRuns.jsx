@@ -1,7 +1,6 @@
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
-import TestRuns from '../TestRuns';
 
 // Mock paths must match component imports
 jest.mock('../../services/testRunsService', () => ({
@@ -12,6 +11,7 @@ jest.mock('../../services/testRunsService', () => ({
       { id: '1002', suite: 'Regression', status: 'failed', passed: 20, failed: 8, skipped: 0, durationSec: 140, startTime: '2024-01-02T00:00:00Z' },
       { id: '1003', suite: 'API', status: 'flaky', passed: 26, failed: 2, skipped: 2, durationSec: 130, startTime: '2024-01-03T00:00:00Z' },
     ]),
+    get: jest.fn(),
   },
 }));
 
@@ -31,9 +31,11 @@ describe('TestRuns', () => {
       ok: true,
       json: async () => ({}),
     });
+    jest.resetModules();
   });
 
   test('applies filters and search', async () => {
+    const TestRuns = require('../TestRuns').default;
     renderWithProviders(<TestRuns />);
 
     await waitFor(() => expect(screen.getByText('Test Runs')).toBeInTheDocument());

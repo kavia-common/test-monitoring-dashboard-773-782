@@ -10,11 +10,21 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ],
+    "moduleNameMapper": {
+      "\\\\.(css|less|scss)$": "<rootDir>/src/__mocks__/styleMock.js",
+      "\\\\.(png|jpg|jpeg|svg)$": "<rootDir>/src/__mocks__/fileMock.js"
+    },
+    "testEnvironment": "jsdom"
   },
   "browserslist": {
     "production": [

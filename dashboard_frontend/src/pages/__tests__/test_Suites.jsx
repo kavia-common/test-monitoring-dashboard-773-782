@@ -3,6 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
 import Suites from '../Suites';
 
+// Mock path matches component import: '../services/suitesService' -> '../../services/suitesService'
 jest.mock('../../services/suitesService', () => ({
   __esModule: true,
   suitesService: {

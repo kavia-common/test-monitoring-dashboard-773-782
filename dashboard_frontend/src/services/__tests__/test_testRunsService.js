@@ -1,14 +1,29 @@
-import { testRunsService } from '../testRunsService';
 import * as utilsEnv from '../utilsEnv';
 
 describe('testRunsService', () => {
+  let testRunsService;
+
   beforeEach(() => {
+    jest.resetModules();
+
+    // Force mock mode (no API urls)
     jest.spyOn(utilsEnv, 'getEnvStatic').mockReturnValue({
       API_BASE: '',
       BACKEND_URL: '',
       LOG_LEVEL: 'info',
     });
+
+    // Default fetch mock to avoid network calls
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+
+    // Require service after mocks are set
+    // eslint-disable-next-line global-require
+    testRunsService = require('../testRunsService').testRunsService;
   });
+
   afterEach(() => {
     jest.restoreAllMocks();
   });

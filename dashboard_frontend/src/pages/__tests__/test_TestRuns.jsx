@@ -3,6 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
 import TestRuns from '../TestRuns';
 
+// Mock paths must match component imports
 jest.mock('../../services/testRunsService', () => ({
   __esModule: true,
   testRunsService: {

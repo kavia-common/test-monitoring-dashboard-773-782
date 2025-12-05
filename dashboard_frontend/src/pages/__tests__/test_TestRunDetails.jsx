@@ -3,6 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
 import TestRunDetails from '../TestRunDetails';
 
+// Mock path matches component import
 jest.mock('../../services/testRunsService', () => ({
   __esModule: true,
   testRunsService: {
@@ -37,15 +38,18 @@ describe('TestRunDetails', () => {
     expect(screen.getByText(/Passed:/)).toBeInTheDocument();
 
     // Switch to Tests
-    fireEvent.click(screen.getByRole('button', { name: 'Tests' }));
+    const testsBtn = screen.getByRole('button', { name: 'Tests' });
+    testsBtn && testsBtn.click();
     expect(screen.getByText('Test A')).toBeInTheDocument();
 
     // Switch to Logs
-    fireEvent.click(screen.getByRole('button', { name: 'Logs' }));
+    const logsBtn = screen.getByRole('button', { name: 'Logs' });
+    logsBtn && logsBtn.click();
     expect(screen.getByText('Some logs')).toBeInTheDocument();
 
     // Switch to Artifacts
-    fireEvent.click(screen.getByRole('button', { name: 'Artifacts' }));
+    const artBtn = screen.getByRole('button', { name: 'Artifacts' });
+    artBtn && artBtn.click();
     expect(screen.getByText(/No artifacts available/)).toBeInTheDocument();
   });
 });

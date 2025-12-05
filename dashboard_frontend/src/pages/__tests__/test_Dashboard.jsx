@@ -3,17 +3,16 @@ import { screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils/renderWithProviders';
 import Dashboard from '../Dashboard';
 
-jest.mock('../../services/testRunsService', () => {
-  return {
-    __esModule: true,
-    testRunsService: {
-      list: jest.fn().mockResolvedValue([
-        { id: '1', suite: 'Smoke', status: 'passed', passed: 10, failed: 0, skipped: 1, durationSec: 100, startTime: '2024-01-01T00:00:00Z' },
-        { id: '2', suite: 'Regression', status: 'failed', passed: 8, failed: 2, skipped: 0, durationSec: 120, startTime: '2024-01-02T00:00:00Z' },
-      ]),
-    },
-  };
-});
+// Mock path must match component import: '../services/testRunsService' -> '../../services/testRunsService'
+jest.mock('../../services/testRunsService', () => ({
+  __esModule: true,
+  testRunsService: {
+    list: jest.fn().mockResolvedValue([
+      { id: '1', suite: 'Smoke', status: 'passed', passed: 10, failed: 0, skipped: 1, durationSec: 100, startTime: '2024-01-01T00:00:00Z' },
+      { id: '2', suite: 'Regression', status: 'failed', passed: 8, failed: 2, skipped: 0, durationSec: 120, startTime: '2024-01-02T00:00:00Z' },
+    ]),
+  },
+}));
 
 describe('Dashboard', () => {
   beforeEach(() => {

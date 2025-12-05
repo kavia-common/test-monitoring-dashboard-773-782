@@ -1,13 +1,78 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --color-primary: #374151;
+  --color-secondary: #9CA3AF;
+  --color-success: #10B981;
+  --color-error: #EF4444;
+  --color-bg: #FFFFFF;
+  --color-surface: #F9FAFB;
+  --color-text: #111827;
+  --color-border: #E5E7EB;
+  --focus-ring: 2px solid #2563EB;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+[data-theme="dark"] {
+  --color-primary: #9CA3AF;
+  --color-secondary: #6B7280;
+  --color-success: #34D399;
+  --color-error: #F87171;
+  --color-bg: #0B1020;
+  --color-surface: #111827;
+  --color-text: #F9FAFB;
+  --color-border: #1F2937;
+  --focus-ring: 2px solid #60A5FA;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.hr {
+  height: 1px;
+  background: var(--color-border);
+  border: 0;
+  margin: 8px 0;
+}
+
+.scroll-x {
+  overflow-x: auto;
 }

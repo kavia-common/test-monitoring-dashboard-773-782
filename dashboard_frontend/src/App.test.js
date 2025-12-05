@@ -1,8 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import { AppRouter } from './router';
+import { ThemeProvider } from './components/common/ThemeProvider';
+import { StoreProvider } from './state/store';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders app title', () => {
+  render(
+    <StoreProvider>
+      <ThemeProvider>
+        <AppRouter />
+      </ThemeProvider>
+    </StoreProvider>
+  );
+  const title = screen.getByTestId('app-title');
+  expect(title).toBeInTheDocument();
+  expect(title).toHaveTextContent('Test Monitoring Dashboard');
 });

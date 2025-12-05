@@ -4,8 +4,20 @@ import { renderWithProviders } from './test-utils/renderWithProviders';
 import { AppRouter } from './router';
 
 describe('AppRouter + Layout', () => {
+  const origFetch = global.fetch;
+
   beforeEach(() => {
     window.location.hash = '#/';
+    // Stub fetch to avoid any accidental network calls from mounted pages/components
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+  });
+
+  afterEach(() => {
+    global.fetch = origFetch;
+    jest.restoreAllMocks();
   });
 
   test('renders dashboard by default and highlights side nav', () => {

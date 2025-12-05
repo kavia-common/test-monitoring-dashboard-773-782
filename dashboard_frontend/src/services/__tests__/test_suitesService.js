@@ -1,18 +1,20 @@
-import * as utilsEnv from '../utilsEnv';
+/**
+ * Mock utilsEnv at module level so when the service imports it, it sees mock values.
+ */
+jest.mock('../utilsEnv', () => ({
+  __esModule: true,
+  getEnvStatic: () => ({
+    API_BASE: '',
+    BACKEND_URL: '',
+    LOG_LEVEL: 'info',
+  }),
+}));
 
 describe('suitesService', () => {
   let suitesService;
 
   beforeEach(() => {
-    // Ensure a clean module cache and set env mocks before importing the service
     jest.resetModules();
-
-    // Mock getEnvStatic to force mock mode (no API urls)
-    jest.spyOn(utilsEnv, 'getEnvStatic').mockReturnValue({
-      API_BASE: '',
-      BACKEND_URL: '',
-      LOG_LEVEL: 'info',
-    });
 
     // Default fetch mock to avoid real network calls if code ever hits it
     global.fetch = jest.fn().mockResolvedValue({

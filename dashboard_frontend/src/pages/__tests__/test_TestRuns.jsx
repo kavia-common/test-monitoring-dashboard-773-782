@@ -4,6 +4,7 @@ import { renderWithProviders } from '../../test-utils/renderWithProviders';
 import TestRuns from '../TestRuns';
 
 jest.mock('../../services/testRunsService', () => ({
+  __esModule: true,
   testRunsService: {
     list: jest.fn().mockResolvedValue([
       { id: '1001', suite: 'Smoke', status: 'passed', passed: 28, failed: 0, skipped: 1, durationSec: 120, startTime: '2024-01-01T00:00:00Z' },
@@ -14,6 +15,7 @@ jest.mock('../../services/testRunsService', () => ({
 }));
 
 jest.mock('../../services/suitesService', () => ({
+  __esModule: true,
   suitesService: {
     list: jest.fn().mockResolvedValue([
       { id: '1', name: 'Smoke', lastRunId: '1001', lastStatus: 'passed' },
@@ -23,6 +25,13 @@ jest.mock('../../services/suitesService', () => ({
 }));
 
 describe('TestRuns', () => {
+  beforeEach(() => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+  });
+
   test('applies filters and search', async () => {
     renderWithProviders(<TestRuns />);
 

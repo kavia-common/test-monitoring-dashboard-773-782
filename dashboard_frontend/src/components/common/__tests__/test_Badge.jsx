@@ -14,14 +14,14 @@ describe('Badge', () => {
     render(<Badge text="ok" tone="success" />);
     const el = screen.getByText('ok');
     expect(el).toBeInTheDocument();
-    // style color applied by inline style; ensure style contains color token
-    expect(el.getAttribute('style')).toMatch(/--color-success/);
+    // assert computed inline style uses CSS var token
+    expect(el).toHaveStyle('color: var(--color-success)');
   });
 
   test('renders with error tone', () => {
     render(<Badge text="bad" tone="error" />);
     const el = screen.getByText('bad');
-    expect(el.getAttribute('style')).toMatch(/--color-error/);
+    expect(el).toHaveStyle('color: var(--color-error)');
   });
 
   test('falls back to default tone on unknown', () => {

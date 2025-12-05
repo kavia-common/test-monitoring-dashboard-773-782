@@ -5,6 +5,7 @@ import Dashboard from '../Dashboard';
 
 jest.mock('../../services/testRunsService', () => {
   return {
+    __esModule: true,
     testRunsService: {
       list: jest.fn().mockResolvedValue([
         { id: '1', suite: 'Smoke', status: 'passed', passed: 10, failed: 0, skipped: 1, durationSec: 100, startTime: '2024-01-01T00:00:00Z' },
@@ -15,6 +16,13 @@ jest.mock('../../services/testRunsService', () => {
 });
 
 describe('Dashboard', () => {
+  beforeEach(() => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+  });
+
   test('shows KPI cards, chart, and recent runs table', async () => {
     renderWithProviders(<Dashboard />);
     // KPI titles

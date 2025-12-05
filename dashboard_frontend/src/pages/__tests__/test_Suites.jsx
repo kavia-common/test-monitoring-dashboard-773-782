@@ -4,6 +4,7 @@ import { renderWithProviders } from '../../test-utils/renderWithProviders';
 import Suites from '../Suites';
 
 jest.mock('../../services/suitesService', () => ({
+  __esModule: true,
   suitesService: {
     list: jest.fn().mockResolvedValue([
       { id: '1', name: 'Smoke', lastRunId: '1001', lastStatus: 'passed' },
@@ -13,6 +14,13 @@ jest.mock('../../services/suitesService', () => ({
 }));
 
 describe('Suites', () => {
+  beforeEach(() => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+  });
+
   test('lists suites with last run status', async () => {
     renderWithProviders(<Suites />);
     await waitFor(() => expect(screen.getByText('Suites')).toBeInTheDocument());

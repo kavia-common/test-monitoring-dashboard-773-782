@@ -20,19 +20,17 @@ describe('useWebSocket', () => {
     expect(result.current.socket).toBeNull();
   });
 
-  test('connects and cleans up when URL present', () => {
-    const listeners = {};
+  test('connects and cleans up when URL present', async () => {
     class WS {
       constructor(url) {
         this.url = url;
+        // on construction, open will be called in next task
         setTimeout(() => this.onopen && this.onopen(), 0);
       }
       close() {
         this.onclose && this.onclose();
       }
-      addEventListener(ev, cb) {
-        listeners[ev] = cb;
-      }
+      addEventListener() {}
     }
     global.WebSocket = WS;
     process.env = { ...OLD_ENV, REACT_APP_WS_URL: 'wss://ws.example.com/' };
@@ -40,16 +38,15 @@ describe('useWebSocket', () => {
     const { result, unmount } = renderHook(() => useWebSocket('/events'));
     expect(result.current.connected).toBe(false);
 
-    // Simulate open
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        expect(result.current.connected).toBe(true);
-        unmount();
-        // on unmount, should set connected false via onclose
-        setTimeout(() => {
-          resolve();
-        }, 0);
-      }, 0);
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 0));
+    });
+
+    expect(result.current.connected).toBe(true);
+
+    await act(async () => {
+      unmount();
+      await Promise.resolve();
     });
   });
 });

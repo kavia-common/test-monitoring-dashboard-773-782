@@ -4,6 +4,7 @@ import { renderWithProviders } from '../../test-utils/renderWithProviders';
 import TestRunDetails from '../TestRunDetails';
 
 jest.mock('../../services/testRunsService', () => ({
+  __esModule: true,
   testRunsService: {
     get: jest.fn().mockResolvedValue({
       id: '1005',
@@ -21,6 +22,13 @@ jest.mock('../../services/testRunsService', () => ({
 }));
 
 describe('TestRunDetails', () => {
+  beforeEach(() => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+  });
+
   test('renders tabs and switches between them', async () => {
     renderWithProviders(<TestRunDetails runId="1005" />);
     await waitFor(() => expect(screen.getByText(/Run 1005/)).toBeInTheDocument());

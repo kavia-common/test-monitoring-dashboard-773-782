@@ -1,5 +1,6 @@
 /**
  * Mock utilsEnv at module level so when the service imports it, it sees mock values.
+ * This must appear before requiring the service under test.
  */
 jest.mock('../utilsEnv', () => ({
   __esModule: true,
@@ -14,15 +15,16 @@ describe('suitesService', () => {
   let suitesService;
 
   beforeEach(() => {
+    // Reset module registry so the service picks up our mocks on require
     jest.resetModules();
 
-    // Default fetch mock to avoid real network calls if code ever hits it
+    // Safety net: avoid any real network calls
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       json: async () => ({}),
     });
 
-    // Now require the service after mocks are in place
+    // Require the service after mocks are in place
     // eslint-disable-next-line global-require
     suitesService = require('../suitesService').suitesService;
   });

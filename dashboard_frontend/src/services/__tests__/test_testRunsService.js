@@ -1,5 +1,6 @@
 /**
  * Mock utilsEnv at module level so when the service imports it, it sees mock values.
+ * Keep this before requiring the service.
  */
 jest.mock('../utilsEnv', () => ({
   __esModule: true,

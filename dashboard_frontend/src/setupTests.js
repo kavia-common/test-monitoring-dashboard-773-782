@@ -4,12 +4,20 @@
    learn more: https://github.com/testing-library/jest-dom */
 import '@testing-library/jest-dom';
 
-// Provide a default, no-op fetch stub to avoid real network calls.
-// Tests can override this per-suite as needed.
+// Global safety net: stub fetch to avoid any real network calls during tests.
+// Individual tests can override this stub as needed.
 if (typeof global.fetch === 'undefined') {
-  // eslint-disable-next-line no-undef
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
     json: async () => ({}),
   });
+} else {
+  // If already defined by environment, still ensure it's a jest mock to prevent real calls.
+  // eslint-disable-next-line no-undef
+  if (typeof jest !== 'undefined' && typeof global.fetch.mock === 'undefined') {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+  }
 }
